@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pujjr.dao.TemplateMapper">
+  <resultMap id="BaseResultMap" type="com.pujjr.domain.Template">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="startcolnum" jdbcType="INTEGER" property="startcolnum" />
+    <result column="telvarname" jdbcType="VARCHAR" property="telvarname" />
+    <result column="attachname" jdbcType="VARCHAR" property="attachname" />
+    <result column="attachpath" jdbcType="VARCHAR" property="attachpath" />
+    <result column="modifydate" jdbcType="DATE" property="modifydate" />
+    <result column="modifyid" jdbcType="VARCHAR" property="modifyid" />
+    <collection column="id" ofType="java.util.HashMap" property="detail" select="selectTplDtl" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name, content, startcolnum, telvarname, attachname, attachpath, modifydate, modifyid
+  </sql>
+  <resultMap id="TplDtlResultMap" type="com.pujjr.domain.TplDtl">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <id column="seq" jdbcType="INTEGER" property="seq" />
+    <result column="comment" jdbcType="VARCHAR" property="comment" />
+    <result column="colnum" jdbcType="VARCHAR" property="colnum" />
+    <result column="varname" jdbcType="VARCHAR" property="varname" />
+  </resultMap>
+  <select id="selectTplDtl" parameterType="String" resultMap="TplDtlResultMap">
+      select * from t_tpldtl where id=#{id}
+  </select>
+  <select id="selectList" parameterType="String" resultMap="BaseResultMap">
+      select * from t_template
+       where 1=1
+       <if test="name!=null and name!=''">
+           name=#{name}
+       </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_template
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_template
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.domain.Template">
+    insert into t_template (id, name, content, 
+      startcolnum, telvarname, attachname, 
+      attachpath, modifydate, modifyid
+      )
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+      #{startcolnum,jdbcType=INTEGER}, #{telvarname,jdbcType=VARCHAR}, #{attachname,jdbcType=VARCHAR}, 
+      #{attachpath,jdbcType=VARCHAR}, #{modifydate,jdbcType=DATE}, #{modifyid,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.domain.Template">
+    insert into t_template
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="startcolnum != null">
+        startcolnum,
+      </if>
+      <if test="telvarname != null">
+        telvarname,
+      </if>
+      <if test="attachname != null">
+        attachname,
+      </if>
+      <if test="attachpath != null">
+        attachpath,
+      </if>
+      <if test="modifydate != null">
+        modifydate,
+      </if>
+      <if test="modifyid != null">
+        modifyid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="startcolnum != null">
+        #{startcolnum,jdbcType=INTEGER},
+      </if>
+      <if test="telvarname != null">
+        #{telvarname,jdbcType=VARCHAR},
+      </if>
+      <if test="attachname != null">
+        #{attachname,jdbcType=VARCHAR},
+      </if>
+      <if test="attachpath != null">
+        #{attachpath,jdbcType=VARCHAR},
+      </if>
+      <if test="modifydate != null">
+        #{modifydate,jdbcType=DATE},
+      </if>
+      <if test="modifyid != null">
+        #{modifyid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.domain.Template">
+    update t_template
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="startcolnum != null">
+        startcolnum = #{startcolnum,jdbcType=INTEGER},
+      </if>
+      <if test="telvarname != null">
+        telvarname = #{telvarname,jdbcType=VARCHAR},
+      </if>
+      <if test="attachname != null">
+        attachname = #{attachname,jdbcType=VARCHAR},
+      </if>
+      <if test="attachpath != null">
+        attachpath = #{attachpath,jdbcType=VARCHAR},
+      </if>
+      <if test="modifydate != null">
+        modifydate = #{modifydate,jdbcType=DATE},
+      </if>
+      <if test="modifyid != null">
+        modifyid = #{modifyid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.domain.Template">
+    update t_template
+    set name = #{name,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      startcolnum = #{startcolnum,jdbcType=INTEGER},
+      telvarname = #{telvarname,jdbcType=VARCHAR},
+      attachname = #{attachname,jdbcType=VARCHAR},
+      attachpath = #{attachpath,jdbcType=VARCHAR},
+      modifydate = #{modifydate,jdbcType=DATE},
+      modifyid = #{modifyid,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

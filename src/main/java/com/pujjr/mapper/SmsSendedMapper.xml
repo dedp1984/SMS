@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pujjr.dao.SmsSendedMapper">
+  <resultMap id="BaseResultMap" type="com.pujjr.domain.SmsSended">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="srcchnl" jdbcType="VARCHAR" property="srcchnl" />
+    <result column="detailid" jdbcType="VARCHAR" property="detailid" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="tel" jdbcType="VARCHAR" property="tel" />
+    <result column="procstatus" jdbcType="VARCHAR" property="procstatus" />
+    <result column="sendtaskid" jdbcType="VARCHAR" property="sendtaskid" />
+    <result column="sendtime" jdbcType="DATE" property="sendtime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, srcchnl, detailid, content, tel, procstatus, sendtaskid, sendtime
+  </sql>
+  <select id="selectList" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_sms_sended
+    where 1=1 
+    <if test="content !='' and content!=null">
+       and content  like  CONCAT(CONCAT('%',#{content}),'%')
+    </if>
+    <if test="tel!='' and tel!=null">
+       and  tel  like  CONCAT(CONCAT('%',#{tel}),'%')
+    </if>
+    <if test="starttime!='' and starttime!=null">
+       and  sendtime>=#{starttime}
+    </if>
+    <if test="endtime!='' and endtime!=null">
+        <![CDATA[
+        and  sendtime<=#{endtime}
+        ]]>
+       
+    </if>
+    <if test="status!='' and status!=null">
+        and procstatus=#{status}
+    </if>
+    order by sendtime desc
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_sms_sended
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_sms_sended
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.domain.SmsSended">
+    insert into t_sms_sended (id, srcchnl, detailid, 
+      content, tel, procstatus, 
+      sendtaskid, sendtime)
+    values (#{id,jdbcType=VARCHAR}, #{srcchnl,jdbcType=VARCHAR}, #{detailid,jdbcType=VARCHAR}, 
+      #{content,jdbcType=VARCHAR}, #{tel,jdbcType=VARCHAR}, #{procstatus,jdbcType=VARCHAR}, 
+      #{sendtaskid,jdbcType=VARCHAR}, #{sendtime,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.domain.SmsSended">
+    insert into t_sms_sended
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="srcchnl != null">
+        srcchnl,
+      </if>
+      <if test="detailid != null">
+        detailid,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="tel != null">
+        tel,
+      </if>
+      <if test="procstatus != null">
+        procstatus,
+      </if>
+      <if test="sendtaskid != null">
+        sendtaskid,
+      </if>
+      <if test="sendtime != null">
+        sendtime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="srcchnl != null">
+        #{srcchnl,jdbcType=VARCHAR},
+      </if>
+      <if test="detailid != null">
+        #{detailid,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null">
+        #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="procstatus != null">
+        #{procstatus,jdbcType=VARCHAR},
+      </if>
+      <if test="sendtaskid != null">
+        #{sendtaskid,jdbcType=VARCHAR},
+      </if>
+      <if test="sendtime != null">
+        #{sendtime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.domain.SmsSended">
+    update t_sms_sended
+    <set>
+      <if test="srcchnl != null">
+        srcchnl = #{srcchnl,jdbcType=VARCHAR},
+      </if>
+      <if test="detailid != null">
+        detailid = #{detailid,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null">
+        tel = #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="procstatus != null">
+        procstatus = #{procstatus,jdbcType=VARCHAR},
+      </if>
+      <if test="sendtaskid != null">
+        sendtaskid = #{sendtaskid,jdbcType=VARCHAR},
+      </if>
+      <if test="sendtime != null">
+        sendtime = #{sendtime,jdbcType=DATE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.domain.SmsSended">
+    update t_sms_sended
+    set srcchnl = #{srcchnl,jdbcType=VARCHAR},
+      detailid = #{detailid,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      tel = #{tel,jdbcType=VARCHAR},
+      procstatus = #{procstatus,jdbcType=VARCHAR},
+      sendtaskid = #{sendtaskid,jdbcType=VARCHAR},
+      sendtime = #{sendtime,jdbcType=DATE}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectBySendTaskId" resultMap="BaseResultMap">
+       select 
+    <include refid="Base_Column_List" />
+    from t_sms_sended
+    where sendtaskid = #{sendtaskid,jdbcType=VARCHAR} and tel=#{tel,jdbcType=VARCHAR}
+  </select>
+  <update id="updateBySendTaskId" parameterType="com.pujjr.domain.SmsSended" >
+      update t_sms_sended
+    <set >
+      <if test="procstatus != null" >
+        procstatus = #{procstatus,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where sendtaskid = #{sendtaskid,jdbcType=VARCHAR} and tel=#{tel,jdbcType=VARCHAR}
+  </update>
+</mapper>

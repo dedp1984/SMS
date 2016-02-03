@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pujjr.dao.SmsTaskInfoMapper">
+  <resultMap id="BaseResultMap" type="com.pujjr.domain.SmsTaskInfo">
+    <id column="taskid" jdbcType="VARCHAR" property="taskid" />
+    <result column="taskname" jdbcType="VARCHAR" property="taskname" />
+    <result column="tasktype" jdbcType="VARCHAR" property="tasktype" />
+    <result column="tplid" jdbcType="VARCHAR" property="tplid" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="filename" jdbcType="VARCHAR" property="filename" />
+    <result column="totalcnt" jdbcType="INTEGER" property="totalcnt" />
+    <result column="istimertask" jdbcType="BIT" property="istimertask" />
+    <result column="sendtime" jdbcType="DATE" property="sendtime" />
+    <result column="procstatus" jdbcType="VARCHAR" property="procstatus" />
+    <result column="createid" jdbcType="VARCHAR" property="createid" />
+    <result column="createdate" jdbcType="DATE" property="createdate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    taskid, taskname, tasktype, tplid, content, filename, totalcnt, istimertask, sendtime, 
+    procstatus, createid, createdate
+  </sql>
+  <select id="selectList" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_sms_taskinfo
+    where 1=1 
+    <if test="taskname!='' and taskname!=null">
+        and taskname = #{taskname,jdbcType=VARCHAR}
+    </if>
+    <if test="starttime!='' and starttime!=null">
+        and createdate>=#{starttime}
+    </if>
+    <if test="endtime!='' and endtime!=null">
+        <![CDATA[
+        and createdate<=#{endtime}
+        ]]>
+    </if>
+    <if test="createid!='' and createid!=null">
+        and createid = #{createid,jdbcType=VARCHAR}
+    </if>
+    
+  </select>
+  <select id="selectTimerTaskList"  resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    <![CDATA[
+     from t_sms_taskinfo
+     where 1=1 and istimertask=true and procstatus='待处理' and sendtime<=#{sendtime}
+    ]]>
+   
+    
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_sms_taskinfo
+    where taskid = #{taskid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_sms_taskinfo
+    where taskid = #{taskid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.domain.SmsTaskInfo">
+    insert into t_sms_taskinfo (taskid, taskname, tasktype, 
+      tplid, content, filename, 
+      totalcnt, istimertask, sendtime, 
+      procstatus, createid, createdate
+      )
+    values (#{taskid,jdbcType=VARCHAR}, #{taskname,jdbcType=VARCHAR}, #{tasktype,jdbcType=VARCHAR}, 
+      #{tplid,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{filename,jdbcType=VARCHAR}, 
+      #{totalcnt,jdbcType=INTEGER}, #{istimertask,jdbcType=BIT}, #{sendtime,jdbcType=DATE}, 
+      #{procstatus,jdbcType=VARCHAR}, #{createid,jdbcType=VARCHAR}, #{createdate,jdbcType=DATE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.domain.SmsTaskInfo">
+    insert into t_sms_taskinfo
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="taskid != null">
+        taskid,
+      </if>
+      <if test="taskname != null">
+        taskname,
+      </if>
+      <if test="tasktype != null">
+        tasktype,
+      </if>
+      <if test="tplid != null">
+        tplid,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="filename != null">
+        filename,
+      </if>
+      <if test="totalcnt != null">
+        totalcnt,
+      </if>
+      <if test="istimertask != null">
+        istimertask,
+      </if>
+      <if test="sendtime != null">
+        sendtime,
+      </if>
+      <if test="procstatus != null">
+        procstatus,
+      </if>
+      <if test="createid != null">
+        createid,
+      </if>
+      <if test="createdate != null">
+        createdate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="taskid != null">
+        #{taskid,jdbcType=VARCHAR},
+      </if>
+      <if test="taskname != null">
+        #{taskname,jdbcType=VARCHAR},
+      </if>
+      <if test="tasktype != null">
+        #{tasktype,jdbcType=VARCHAR},
+      </if>
+      <if test="tplid != null">
+        #{tplid,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="filename != null">
+        #{filename,jdbcType=VARCHAR},
+      </if>
+      <if test="totalcnt != null">
+        #{totalcnt,jdbcType=INTEGER},
+      </if>
+      <if test="istimertask != null">
+        #{istimertask,jdbcType=BIT},
+      </if>
+      <if test="sendtime != null">
+        #{sendtime,jdbcType=DATE},
+      </if>
+      <if test="procstatus != null">
+        #{procstatus,jdbcType=VARCHAR},
+      </if>
+      <if test="createid != null">
+        #{createid,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null">
+        #{createdate,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.domain.SmsTaskInfo">
+    update t_sms_taskinfo
+    <set>
+      <if test="taskname != null">
+        taskname = #{taskname,jdbcType=VARCHAR},
+      </if>
+      <if test="tasktype != null">
+        tasktype = #{tasktype,jdbcType=VARCHAR},
+      </if>
+      <if test="tplid != null">
+        tplid = #{tplid,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="filename != null">
+        filename = #{filename,jdbcType=VARCHAR},
+      </if>
+      <if test="totalcnt != null">
+        totalcnt = #{totalcnt,jdbcType=INTEGER},
+      </if>
+      <if test="istimertask != null">
+        istimertask = #{istimertask,jdbcType=BIT},
+      </if>
+      <if test="sendtime != null">
+        sendtime = #{sendtime,jdbcType=DATE},
+      </if>
+      <if test="procstatus != null">
+        procstatus = #{procstatus,jdbcType=VARCHAR},
+      </if>
+      <if test="createid != null">
+        createid = #{createid,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null">
+        createdate = #{createdate,jdbcType=DATE},
+      </if>
+    </set>
+    where taskid = #{taskid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.domain.SmsTaskInfo">
+    update t_sms_taskinfo
+    set taskname = #{taskname,jdbcType=VARCHAR},
+      tasktype = #{tasktype,jdbcType=VARCHAR},
+      tplid = #{tplid,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      filename = #{filename,jdbcType=VARCHAR},
+      totalcnt = #{totalcnt,jdbcType=INTEGER},
+      istimertask = #{istimertask,jdbcType=BIT},
+      sendtime = #{sendtime,jdbcType=DATE},
+      procstatus = #{procstatus,jdbcType=VARCHAR},
+      createid = #{createid,jdbcType=VARCHAR},
+      createdate = #{createdate,jdbcType=DATE}
+    where taskid = #{taskid,jdbcType=VARCHAR}
+  </update>
+</mapper>

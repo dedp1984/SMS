@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.dao.SmsWaitSendMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.domain.SmsWaitSend" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="srcchnl" property="srcchnl" jdbcType="VARCHAR" />
+    <result column="detailid" property="detailid" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="tel" property="tel" jdbcType="VARCHAR" />
+    <result column="procstatus" property="procstatus" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, srcchnl, detailid, content, tel, procstatus
+  </sql>
+  <select id="selectList" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_sms_waitsend
+    where procstatus = #{procStatus,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_sms_waitsend
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_sms_waitsend
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.domain.SmsWaitSend" >
+    insert into t_sms_waitsend (id, srcchnl, detailid, 
+      content, tel, procstatus
+      )
+    values (#{id,jdbcType=VARCHAR}, #{srcchnl,jdbcType=VARCHAR}, #{detailid,jdbcType=VARCHAR}, 
+      #{content,jdbcType=VARCHAR}, #{tel,jdbcType=VARCHAR}, #{procstatus,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.domain.SmsWaitSend" >
+    insert into t_sms_waitsend
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="srcchnl != null" >
+        srcchnl,
+      </if>
+      <if test="detailid != null" >
+        detailid,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="tel != null" >
+        tel,
+      </if>
+      <if test="procstatus != null" >
+        procstatus,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="srcchnl != null" >
+        #{srcchnl,jdbcType=VARCHAR},
+      </if>
+      <if test="detailid != null" >
+        #{detailid,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null" >
+        #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="procstatus != null" >
+        #{procstatus,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.domain.SmsWaitSend" >
+    update t_sms_waitsend
+    <set >
+      <if test="srcchnl != null" >
+        srcchnl = #{srcchnl,jdbcType=VARCHAR},
+      </if>
+      <if test="detailid != null" >
+        detailid = #{detailid,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null" >
+        tel = #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="procstatus != null" >
+        procstatus = #{procstatus,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.domain.SmsWaitSend" >
+    update t_sms_waitsend
+    set srcchnl = #{srcchnl,jdbcType=VARCHAR},
+      detailid = #{detailid,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      tel = #{tel,jdbcType=VARCHAR},
+      procstatus = #{procstatus,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

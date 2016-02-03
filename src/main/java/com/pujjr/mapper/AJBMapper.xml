@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.dao.AJBMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.domain.AJB" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="prodtype" property="prodtype" jdbcType="VARCHAR" />
+    <result column="custname" property="custname" jdbcType="VARCHAR" />
+    <result column="idno" property="idno" jdbcType="VARCHAR" />
+    <result column="jxsid" property="jxsid" jdbcType="VARCHAR" />
+    <result column="verifyid" property="verifyid" jdbcType="VARCHAR" />
+    <result column="approveid" property="approveid" jdbcType="VARCHAR" />
+    <result column="receivedate" property="receivedate" jdbcType="DATE" />
+    <result column="approvedate" property="approvedate" jdbcType="DATE" />
+    <result column="approvedura" property="approvedura" jdbcType="INTEGER" />
+    <result column="loandate" property="loandate" jdbcType="DATE" />
+    <result column="applyamt" property="applyamt" jdbcType="DOUBLE" />
+    <result column="applyperoid" property="applyperoid" jdbcType="INTEGER" />
+    <result column="applypercent" property="applypercent" jdbcType="DOUBLE" />
+    <result column="approveamt" property="approveamt" jdbcType="DOUBLE" />
+    <result column="extraitem" property="extraitem" jdbcType="VARCHAR" />
+    <result column="approveperoid" property="approveperoid" jdbcType="INTEGER" />
+    <result column="approvepercent" property="approvepercent" jdbcType="DOUBLE" />
+    <result column="rate" property="rate" jdbcType="DOUBLE" />
+    <result column="mpayamt" property="mpayamt" jdbcType="DOUBLE" />
+    <result column="loanamt" property="loanamt" jdbcType="DOUBLE" />
+    <result column="peroid" property="peroid" jdbcType="INTEGER" />
+    <result column="refundbankname" property="refundbankname" jdbcType="VARCHAR" />
+    <result column="refundcardno" property="refundcardno" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="progress" property="progress" jdbcType="VARCHAR" />
+    <result column="refusereason" property="refusereason" jdbcType="VARCHAR" />
+    <result column="createid" property="createid" jdbcType="VARCHAR" />
+    <result column="createdate" property="createdate" jdbcType="DATE" />
+    <result column="reserve1" property="reserve1" jdbcType="VARCHAR" />
+    <result column="reserve2" property="reserve2" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, prodtype, custname, idno, jxsid, verifyid, approveid, receivedate, approvedate, 
+    approvedura, loandate, applyamt, applyperoid, applypercent, approveamt, extraitem, 
+    approveperoid, approvepercent, rate, mpayamt, loanamt, peroid, refundbankname, refundcardno, 
+    status, progress, refusereason, createid, createdate, reserve1, reserve2
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_ajb
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_ajb
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.domain.AJB" >
+    insert into t_ajb (id, prodtype, custname, 
+      idno, jxsid, verifyid, 
+      approveid, receivedate, approvedate, 
+      approvedura, loandate, applyamt, 
+      applyperoid, applypercent, approveamt, 
+      extraitem, approveperoid, approvepercent, 
+      rate, mpayamt, loanamt, 
+      peroid, refundbankname, refundcardno, 
+      status, progress, refusereason, 
+      createid, createdate, reserve1, 
+      reserve2)
+    values (#{id,jdbcType=VARCHAR}, #{prodtype,jdbcType=VARCHAR}, #{custname,jdbcType=VARCHAR}, 
+      #{idno,jdbcType=VARCHAR}, #{jxsid,jdbcType=VARCHAR}, #{verifyid,jdbcType=VARCHAR}, 
+      #{approveid,jdbcType=VARCHAR}, #{receivedate,jdbcType=DATE}, #{approvedate,jdbcType=DATE}, 
+      #{approvedura,jdbcType=INTEGER}, #{loandate,jdbcType=DATE}, #{applyamt,jdbcType=DOUBLE}, 
+      #{applyperoid,jdbcType=INTEGER}, #{applypercent,jdbcType=DOUBLE}, #{approveamt,jdbcType=DOUBLE}, 
+      #{extraitem,jdbcType=VARCHAR}, #{approveperoid,jdbcType=INTEGER}, #{approvepercent,jdbcType=DOUBLE}, 
+      #{rate,jdbcType=DOUBLE}, #{mpayamt,jdbcType=DOUBLE}, #{loanamt,jdbcType=DOUBLE}, 
+      #{peroid,jdbcType=INTEGER}, #{refundbankname,jdbcType=VARCHAR}, #{refundcardno,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{progress,jdbcType=VARCHAR}, #{refusereason,jdbcType=VARCHAR}, 
+      #{createid,jdbcType=VARCHAR}, #{createdate,jdbcType=DATE}, #{reserve1,jdbcType=VARCHAR}, 
+      #{reserve2,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.domain.AJB" >
+    insert into t_ajb
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="prodtype != null" >
+        prodtype,
+      </if>
+      <if test="custname != null" >
+        custname,
+      </if>
+      <if test="idno != null" >
+        idno,
+      </if>
+      <if test="jxsid != null" >
+        jxsid,
+      </if>
+      <if test="verifyid != null" >
+        verifyid,
+      </if>
+      <if test="approveid != null" >
+        approveid,
+      </if>
+      <if test="receivedate != null" >
+        receivedate,
+      </if>
+      <if test="approvedate != null" >
+        approvedate,
+      </if>
+      <if test="approvedura != null" >
+        approvedura,
+      </if>
+      <if test="loandate != null" >
+        loandate,
+      </if>
+      <if test="applyamt != null" >
+        applyamt,
+      </if>
+      <if test="applyperoid != null" >
+        applyperoid,
+      </if>
+      <if test="applypercent != null" >
+        applypercent,
+      </if>
+      <if test="approveamt != null" >
+        approveamt,
+      </if>
+      <if test="extraitem != null" >
+        extraitem,
+      </if>
+      <if test="approveperoid != null" >
+        approveperoid,
+      </if>
+      <if test="approvepercent != null" >
+        approvepercent,
+      </if>
+      <if test="rate != null" >
+        rate,
+      </if>
+      <if test="mpayamt != null" >
+        mpayamt,
+      </if>
+      <if test="loanamt != null" >
+        loanamt,
+      </if>
+      <if test="peroid != null" >
+        peroid,
+      </if>
+      <if test="refundbankname != null" >
+        refundbankname,
+      </if>
+      <if test="refundcardno != null" >
+        refundcardno,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="progress != null" >
+        progress,
+      </if>
+      <if test="refusereason != null" >
+        refusereason,
+      </if>
+      <if test="createid != null" >
+        createid,
+      </if>
+      <if test="createdate != null" >
+        createdate,
+      </if>
+      <if test="reserve1 != null" >
+        reserve1,
+      </if>
+      <if test="reserve2 != null" >
+        reserve2,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="prodtype != null" >
+        #{prodtype,jdbcType=VARCHAR},
+      </if>
+      <if test="custname != null" >
+        #{custname,jdbcType=VARCHAR},
+      </if>
+      <if test="idno != null" >
+        #{idno,jdbcType=VARCHAR},
+      </if>
+      <if test="jxsid != null" >
+        #{jxsid,jdbcType=VARCHAR},
+      </if>
+      <if test="verifyid != null" >
+        #{verifyid,jdbcType=VARCHAR},
+      </if>
+      <if test="approveid != null" >
+        #{approveid,jdbcType=VARCHAR},
+      </if>
+      <if test="receivedate != null" >
+        #{receivedate,jdbcType=DATE},
+      </if>
+      <if test="approvedate != null" >
+        #{approvedate,jdbcType=DATE},
+      </if>
+      <if test="approvedura != null" >
+        #{approvedura,jdbcType=INTEGER},
+      </if>
+      <if test="loandate != null" >
+        #{loandate,jdbcType=DATE},
+      </if>
+      <if test="applyamt != null" >
+        #{applyamt,jdbcType=DOUBLE},
+      </if>
+      <if test="applyperoid != null" >
+        #{applyperoid,jdbcType=INTEGER},
+      </if>
+      <if test="applypercent != null" >
+        #{applypercent,jdbcType=DOUBLE},
+      </if>
+      <if test="approveamt != null" >
+        #{approveamt,jdbcType=DOUBLE},
+      </if>
+      <if test="extraitem != null" >
+        #{extraitem,jdbcType=VARCHAR},
+      </if>
+      <if test="approveperoid != null" >
+        #{approveperoid,jdbcType=INTEGER},
+      </if>
+      <if test="approvepercent != null" >
+        #{approvepercent,jdbcType=DOUBLE},
+      </if>
+      <if test="rate != null" >
+        #{rate,jdbcType=DOUBLE},
+      </if>
+      <if test="mpayamt != null" >
+        #{mpayamt,jdbcType=DOUBLE},
+      </if>
+      <if test="loanamt != null" >
+        #{loanamt,jdbcType=DOUBLE},
+      </if>
+      <if test="peroid != null" >
+        #{peroid,jdbcType=INTEGER},
+      </if>
+      <if test="refundbankname != null" >
+        #{refundbankname,jdbcType=VARCHAR},
+      </if>
+      <if test="refundcardno != null" >
+        #{refundcardno,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="progress != null" >
+        #{progress,jdbcType=VARCHAR},
+      </if>
+      <if test="refusereason != null" >
+        #{refusereason,jdbcType=VARCHAR},
+      </if>
+      <if test="createid != null" >
+        #{createid,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null" >
+        #{createdate,jdbcType=DATE},
+      </if>
+      <if test="reserve1 != null" >
+        #{reserve1,jdbcType=VARCHAR},
+      </if>
+      <if test="reserve2 != null" >
+        #{reserve2,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.domain.AJB" >
+    update t_ajb
+    <set >
+      <if test="prodtype != null" >
+        prodtype = #{prodtype,jdbcType=VARCHAR},
+      </if>
+      <if test="custname != null" >
+        custname = #{custname,jdbcType=VARCHAR},
+      </if>
+      <if test="idno != null" >
+        idno = #{idno,jdbcType=VARCHAR},
+      </if>
+      <if test="jxsid != null" >
+        jxsid = #{jxsid,jdbcType=VARCHAR},
+      </if>
+      <if test="verifyid != null" >
+        verifyid = #{verifyid,jdbcType=VARCHAR},
+      </if>
+      <if test="approveid != null" >
+        approveid = #{approveid,jdbcType=VARCHAR},
+      </if>
+      <if test="receivedate != null" >
+        receivedate = #{receivedate,jdbcType=DATE},
+      </if>
+      <if test="approvedate != null" >
+        approvedate = #{approvedate,jdbcType=DATE},
+      </if>
+      <if test="approvedura != null" >
+        approvedura = #{approvedura,jdbcType=INTEGER},
+      </if>
+      <if test="loandate != null" >
+        loandate = #{loandate,jdbcType=DATE},
+      </if>
+      <if test="applyamt != null" >
+        applyamt = #{applyamt,jdbcType=DOUBLE},
+      </if>
+      <if test="applyperoid != null" >
+        applyperoid = #{applyperoid,jdbcType=INTEGER},
+      </if>
+      <if test="applypercent != null" >
+        applypercent = #{applypercent,jdbcType=DOUBLE},
+      </if>
+      <if test="approveamt != null" >
+        approveamt = #{approveamt,jdbcType=DOUBLE},
+      </if>
+      <if test="extraitem != null" >
+        extraitem = #{extraitem,jdbcType=VARCHAR},
+      </if>
+      <if test="approveperoid != null" >
+        approveperoid = #{approveperoid,jdbcType=INTEGER},
+      </if>
+      <if test="approvepercent != null" >
+        approvepercent = #{approvepercent,jdbcType=DOUBLE},
+      </if>
+      <if test="rate != null" >
+        rate = #{rate,jdbcType=DOUBLE},
+      </if>
+      <if test="mpayamt != null" >
+        mpayamt = #{mpayamt,jdbcType=DOUBLE},
+      </if>
+      <if test="loanamt != null" >
+        loanamt = #{loanamt,jdbcType=DOUBLE},
+      </if>
+      <if test="peroid != null" >
+        peroid = #{peroid,jdbcType=INTEGER},
+      </if>
+      <if test="refundbankname != null" >
+        refundbankname = #{refundbankname,jdbcType=VARCHAR},
+      </if>
+      <if test="refundcardno != null" >
+        refundcardno = #{refundcardno,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="progress != null" >
+        progress = #{progress,jdbcType=VARCHAR},
+      </if>
+      <if test="refusereason != null" >
+        refusereason = #{refusereason,jdbcType=VARCHAR},
+      </if>
+      <if test="createid != null" >
+        createid = #{createid,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null" >
+        createdate = #{createdate,jdbcType=DATE},
+      </if>
+      <if test="reserve1 != null" >
+        reserve1 = #{reserve1,jdbcType=VARCHAR},
+      </if>
+      <if test="reserve2 != null" >
+        reserve2 = #{reserve2,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.domain.AJB" >
+    update t_ajb
+    set prodtype = #{prodtype,jdbcType=VARCHAR},
+      custname = #{custname,jdbcType=VARCHAR},
+      idno = #{idno,jdbcType=VARCHAR},
+      jxsid = #{jxsid,jdbcType=VARCHAR},
+      verifyid = #{verifyid,jdbcType=VARCHAR},
+      approveid = #{approveid,jdbcType=VARCHAR},
+      receivedate = #{receivedate,jdbcType=DATE},
+      approvedate = #{approvedate,jdbcType=DATE},
+      approvedura = #{approvedura,jdbcType=INTEGER},
+      loandate = #{loandate,jdbcType=DATE},
+      applyamt = #{applyamt,jdbcType=DOUBLE},
+      applyperoid = #{applyperoid,jdbcType=INTEGER},
+      applypercent = #{applypercent,jdbcType=DOUBLE},
+      approveamt = #{approveamt,jdbcType=DOUBLE},
+      extraitem = #{extraitem,jdbcType=VARCHAR},
+      approveperoid = #{approveperoid,jdbcType=INTEGER},
+      approvepercent = #{approvepercent,jdbcType=DOUBLE},
+      rate = #{rate,jdbcType=DOUBLE},
+      mpayamt = #{mpayamt,jdbcType=DOUBLE},
+      loanamt = #{loanamt,jdbcType=DOUBLE},
+      peroid = #{peroid,jdbcType=INTEGER},
+      refundbankname = #{refundbankname,jdbcType=VARCHAR},
+      refundcardno = #{refundcardno,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      progress = #{progress,jdbcType=VARCHAR},
+      refusereason = #{refusereason,jdbcType=VARCHAR},
+      createid = #{createid,jdbcType=VARCHAR},
+      createdate = #{createdate,jdbcType=DATE},
+      reserve1 = #{reserve1,jdbcType=VARCHAR},
+      reserve2 = #{reserve2,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>
