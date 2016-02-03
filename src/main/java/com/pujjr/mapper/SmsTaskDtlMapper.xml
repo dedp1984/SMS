@@ -7,15 +7,19 @@
     <result column="content" property="content" jdbcType="VARCHAR" />
     <result column="tel" property="tel" jdbcType="VARCHAR" />
     <result column="procstatus" property="procstatus" jdbcType="VARCHAR" />
+    <result column="resendcnt"  property="resendcnt"  jdbcType="INTEGER"/>
   </resultMap>
   <sql id="Base_Column_List" >
-    ID, taskid, content, tel, procstatus
+    ID, taskid, content, tel, procstatus,resendcnt
   </sql>
   <select id="selectListByTaskId" resultMap="BaseResultMap">
       select
       <include refid="Base_Column_List" />
       from t_sms_taskdtl
    	  where taskid = #{taskid,jdbcType=VARCHAR}
+   	  <if test="procStatus!='' and procStatus!=null">
+   	      and procStatus=#{procStatus}
+   	  </if>
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -33,9 +37,9 @@
   </delete>
   <insert id="insert" parameterType="com.pujjr.domain.SmsTaskDtl" >
     insert into t_sms_taskdtl (ID, taskid, content, 
-      tel, procstatus)
+      tel, procstatus,resendcnt)
     values (#{id,jdbcType=VARCHAR}, #{taskid,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
-      #{tel,jdbcType=VARCHAR}, #{procstatus,jdbcType=VARCHAR})
+      #{tel,jdbcType=VARCHAR}, #{procstatus,jdbcType=VARCHAR},#{resendcnt,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.pujjr.domain.SmsTaskDtl" >
     insert into t_sms_taskdtl
@@ -55,6 +59,9 @@
       <if test="procstatus != null" >
         procstatus,
       </if>
+      <if test="resendcnt != null">
+        resendcnt
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -71,6 +78,9 @@
       </if>
       <if test="procstatus != null" >
         #{procstatus,jdbcType=VARCHAR},
+      </if>
+      <if test="resendcnt != null">
+        #{resendcnt,jdbcType=INTEGER}
       </if>
     </trim>
   </insert>
@@ -89,6 +99,9 @@
       <if test="procstatus != null" >
         procstatus = #{procstatus,jdbcType=VARCHAR},
       </if>
+       <if test="resendcnt != null" >
+        resendcnt = #{resendcnt,jdbcType=VARCHAR}
+      </if>
     </set>
     where ID = #{id,jdbcType=VARCHAR}
   </update>
@@ -97,7 +110,8 @@
     set taskid = #{taskid,jdbcType=VARCHAR},
       content = #{content,jdbcType=VARCHAR},
       tel = #{tel,jdbcType=VARCHAR},
-      procstatus = #{procstatus,jdbcType=VARCHAR}
+      procstatus = #{procstatus,jdbcType=VARCHAR},
+      resendcnt = #{resendcnt,jdbcType=INTEGER}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
   

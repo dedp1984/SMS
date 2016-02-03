@@ -27,8 +27,34 @@ public class SmsTaskInfo {
     private String createid;
 
     private Timestamp createdate;
+    /**
+     * 增加成功失败统计succcnt,failcnt add by dengpan 2016/2/3
+     * **/
+    private int succcnt;
+    
+    private int failcnt;
 
-    public String getTaskid() {
+    public int getSucccnt()
+	{
+		return succcnt;
+	}
+
+	public void setSucccnt(int succcnt)
+	{
+		this.succcnt = succcnt;
+	}
+
+	public int getFailcnt()
+	{
+		return failcnt;
+	}
+
+	public void setFailcnt(int failcnt)
+	{
+		this.failcnt = failcnt;
+	}
+
+	public String getTaskid() {
         return taskid;
     }
 

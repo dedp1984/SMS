@@ -10,8 +10,21 @@ public class SmsTaskDtl {
     private String tel;
 
     private String procstatus;
+    
+    private Integer resendcnt;
 
-    public String getId() {
+
+	public Integer getResendcnt()
+	{
+		return resendcnt;
+	}
+
+	public void setResendcnt(Integer resendcnt)
+	{
+		this.resendcnt = resendcnt;
+	}
+
+	public String getId() {
         return id;
     }
 

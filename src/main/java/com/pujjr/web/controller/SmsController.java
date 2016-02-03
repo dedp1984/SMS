@@ -202,12 +202,13 @@ public class SmsController
 	@RequestMapping("/queryTaskDtlList")
 	@ResponseBody
 	public Result queryTaskDtlList( String taskid ,
+			                        String procStatus,
 									@RequestParam(value="page")String startPage,
 									@RequestParam(value="limit")String pageSize,
 									HttpSession session) throws ParseException
 	{
 		PageHelper.startPage(Integer.parseInt(startPage), Integer.parseInt(pageSize),true);
-		List<SmsTaskDtl> list=smsService.querySmsTaskDtlListByTaskId(taskid);
+		List<SmsTaskDtl> list=smsService.querySmsTaskDtlListByTaskId(taskid,procStatus);
 		Result result=new Result(true);
 		result.setTotalsize( String.valueOf(((Page)list).getTotal()));
 		result.setItems(list);
@@ -318,5 +319,28 @@ public class SmsController
 		return new Result(true);
 	}
 	
+	@RequestMapping("/resend")
+	@ResponseBody
+	public Result resend(String dtlIdList)
+	{
+		try
+		{
+			if(dtlIdList.trim().length()>0)
+			{
+				dtlIdList=dtlIdList.substring(0, dtlIdList.length()-1);
+			}
+			String ids[]=dtlIdList.split(",");
+			smsService.batchResendMsg(ids);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			Result result=new Result(false);
+			result.addErros("errmsg",e.getMessage());
+			return result;
+		}
+		return new Result(true);
+		
+	}
 	
 }
