@@ -134,7 +134,7 @@ Ext.application({
 				}],
 				dockedItems : [ {
 					xtype:'toolbar',
-					id:'confirm',
+					id:'confirmresend',
 					dock:'top',
 					items:['->',{
 						glyph:'xf067@FontAwesome',

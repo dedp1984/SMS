@@ -270,6 +270,7 @@ public class SmsThreadService
 						}
 						
 					}
+					Thread.sleep(60000);
 					
 				}
 				catch(InterruptedException e)
@@ -279,15 +280,6 @@ public class SmsThreadService
 				catch(Exception e)
 				{
 					e.printStackTrace();					
-				}
-				try
-				{
-					Thread.sleep(60000);
-				}
-				catch (InterruptedException e)
-				{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
 			}
 			log4j.info("结束短信发送状态查询检查线程 ");
