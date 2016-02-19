@@ -77,7 +77,7 @@ public class ConvertService
 		}
 		String path=Utils.getFilePath(filePath);
 		String newFileName=Utils.getFileName(filePath)+"_convert.txt";
-		String newFilePath=path+"\\"+newFileName;
+		String newFilePath=path+File.separator+newFileName;
 		FileUtils.writeLines(new File(newFilePath), list);
 		
 		return newFileName;
