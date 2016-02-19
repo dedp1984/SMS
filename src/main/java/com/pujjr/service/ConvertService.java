@@ -60,15 +60,14 @@ public class ConvertService
 			//代扣金额
 			String amt=Utils.getCellValue(row.getCell(10));
 			
-			int iAmt=(int)(Double.valueOf(amt)*100);
-			
+			amt=String.format("%.0f",Double.valueOf(amt)*100);
 			
 			//支付流水号
 			String tranSeq=String.format("%016d", iStartSeq);
 			//当前日期
 			String tranDate=Utils.getCurrentTime("yyyMMdd");
 			
-			String tranTxt=tranDate+"|"+tranSeq+"|"+bankno.getBankno()+"|0|"+cardno+"|"+custname+"|01|"+idno+"|"+iAmt+"|"+"代扣交易|1笔";
+			String tranTxt=tranDate+"|"+tranSeq+"|"+bankno.getBankno()+"|0|"+cardno+"|"+custname+"|01|"+idno+"|"+amt+"|"+"代扣交易|1笔";
 			
 
 			iStartSeq++;
@@ -78,7 +77,7 @@ public class ConvertService
 		String path=Utils.getFilePath(filePath);
 		String newFileName=Utils.getFileName(filePath)+"_convert.txt";
 		String newFilePath=path+File.separator+newFileName;
-		FileUtils.writeLines(new File(newFilePath), list);
+		FileUtils.writeLines(new File(newFilePath),"GB2312", list,"\r\n");
 		
 		return newFileName;
 	}
