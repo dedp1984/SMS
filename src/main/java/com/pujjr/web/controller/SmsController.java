@@ -348,11 +348,11 @@ public class SmsController
 	}
 	@RequestMapping("/sendone2onemsg")
 	@ResponseBody
-	public Result sendOne2OneMsg(String msg,String telno)
+	public Result sendOne2OneMsg(String msg,String sign,String telno)
 	{
 		try
 		{
-			smsService.sendOne2OneMsg(msg, telno);
+			smsService.sendOne2OneMsg(msg+sign, telno);
 		}
 		catch(Exception e)
 		{

@@ -6,7 +6,7 @@ Ext.application({
 		var queryForm=Ext.create('Ext.form.Panel',{
 			border:1,
 			bodyPadding:'20 20 0',
-			anchor:'100% 50%',
+			anchor:'100% 60%',
 			paramsAsHash: true,
 
 			xtype:'panel',
@@ -28,6 +28,24 @@ Ext.application({
 						name:'msg',
 						width:600,
 						height:150,
+						allowBlank:false
+						}]
+				}]
+			},{
+				xtype:'panel',
+				border:false,
+				layout:'column',
+				margin:'10 0 0 10',
+				items:[{
+					columnWidth:0.8,  //该列占用的宽度，标识为50％
+					layout:'hbox',
+					border:false,
+					items:[{
+						xtype:'textfield',
+						fieldLabel : '短信签名',
+						name:'sign',
+						width:600,
+						value:'【潽金租赁】',
 						allowBlank:false
 						}]
 				}]
