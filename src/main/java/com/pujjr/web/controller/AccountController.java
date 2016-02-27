@@ -1,6 +1,7 @@
 package com.pujjr.web.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,21 +34,30 @@ public class AccountController {
 		SysAccount sysAccount=sysAccountService.querySysAccountByAccountId(accountid);
 		if(sysAccount!=null)
 		{
-			System.out.println(password+" "+sysAccount.getPassword());
-			if(sysAccount.getPassword().equals(password)==false)
+			try
+			{
+				if(sysAccountService.verifyPasswd(password, sysAccount.getPassword())==false)
+				{
+					FormPostResult result=new FormPostResult(false);
+					result.addErros("password", "密码错误");
+					return result;
+				}
+				System.out.println("用户验证成功");
+				httpSession.setAttribute("user", sysAccount);
+				return new FormPostResult(true);
+			}
+			catch(Exception e)
 			{
 				FormPostResult result=new FormPostResult(false);
-				result.addErros("password", "密码错误");
+				result.addErros("accountid", "用户或密码错误");
 				return result;
 			}
-			System.out.println("用户验证成功");
-			httpSession.setAttribute("user", sysAccount);
-			return new FormPostResult(true);
+			
 		}
 		else
 		{
 			FormPostResult result=new FormPostResult(false);
-			result.addErros("accountid", "用户不存在");
+			result.addErros("accountid", "用户或密码错误");
 			return result;
 		}
 		
@@ -114,14 +124,22 @@ public class AccountController {
 				sysAccount.getBusiFeature().add(feature);
 			}
 		}
-		if(sysAccountService.addSysAccount(sysAccount, rolelist)!=0)
+		try
 		{
-			return new FormPostResult(true);
+			if(sysAccountService.addSysAccount(sysAccount, rolelist)!=0)
+			{
+				return new FormPostResult(true);
+			}
+			else
+			{
+				return new FormPostResult(false);
+			}
 		}
-		else
+		catch(Exception e)
 		{
 			return new FormPostResult(false);
 		}
+		
 	}
 	@RequestMapping("/account/deleteAccount")
 	@ResponseBody
@@ -174,12 +192,12 @@ public class AccountController {
 	
 	@RequestMapping("account/modifyAccountPassword")
 	@ResponseBody
-	public Result modifyAccountPassowrd(String accountid,String oldpassword,String newpassword,HttpSession httpSession)
+	public Result modifyAccountPassowrd(String accountid,String oldpassword,String newpassword,HttpSession httpSession) throws NoSuchAlgorithmException, UnsupportedEncodingException
 	{
 		SysAccount sysAccount=sysAccountService.querySysAccountByAccountId(accountid);
 		if(sysAccount!=null)
 		{
-			if(sysAccount.getPassword().equals(oldpassword)==false)
+			if(sysAccountService.verifyPasswd(oldpassword, sysAccount.getPassword())==false)
 			{
 				Result result=new Result(false);
 				result.addErros("errmsg", "密码错误");
@@ -187,7 +205,7 @@ public class AccountController {
 			}
 			else
 			{
-				sysAccount.setPassword(newpassword);
+				sysAccount.setPassword(sysAccountService.generateEncryptPasswd(newpassword));
 				if(sysAccountService.modifySysAccount(sysAccount)==0)
 				{
 					return new Result(false);
