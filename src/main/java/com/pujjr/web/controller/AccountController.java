@@ -36,7 +36,7 @@ public class AccountController {
 		{
 			try
 			{
-				if(sysAccountService.verifyPasswd(password, sysAccount.getPassword())==false)
+				if(sysAccountService.verifyPasswd(sysAccount.getAccountid(),password, sysAccount.getPassword())==false)
 				{
 					FormPostResult result=new FormPostResult(false);
 					result.addErros("password", "√‹¬Î¥ÌŒÛ");
@@ -197,7 +197,7 @@ public class AccountController {
 		SysAccount sysAccount=sysAccountService.querySysAccountByAccountId(accountid);
 		if(sysAccount!=null)
 		{
-			if(sysAccountService.verifyPasswd(oldpassword, sysAccount.getPassword())==false)
+			if(sysAccountService.verifyPasswd(sysAccount.getAccountid(),oldpassword, sysAccount.getPassword())==false)
 			{
 				Result result=new Result(false);
 				result.addErros("errmsg", "√‹¬Î¥ÌŒÛ");
@@ -205,7 +205,7 @@ public class AccountController {
 			}
 			else
 			{
-				sysAccount.setPassword(sysAccountService.generateEncryptPasswd(newpassword));
+				sysAccount.setPassword(sysAccountService.generateEncryptPasswd(sysAccount.getAccountid(),newpassword));
 				if(sysAccountService.modifySysAccount(sysAccount)==0)
 				{
 					return new Result(false);

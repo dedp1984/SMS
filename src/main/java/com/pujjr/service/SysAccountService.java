@@ -58,7 +58,7 @@ public class SysAccountService
 		}
 		return list;
 	}
-	public String generateEncryptPasswd(String passwd) throws UnsupportedEncodingException, NoSuchAlgorithmException
+	public String generateEncryptPasswd(String accountid,String passwd) throws UnsupportedEncodingException, NoSuchAlgorithmException
 	{
 		MessageDigest md5=MessageDigest.getInstance("MD5");
 		MessageDigest sha256=MessageDigest.getInstance("SHA-256");
@@ -80,7 +80,7 @@ public class SysAccountService
 			sMd5Slot+=String.format("%02X", b);
 		}
 		System.out.println("md5 slot="+sMd5Slot);
-		sha256.update((passwd+sMd5Slot).getBytes("GBK"));
+		sha256.update((passwd+sMd5Slot+accountid).getBytes("GBK"));
 		byte[] bSha256=sha256.digest();
 		String sSha256="";
 		for(byte b:bSha256)
@@ -106,7 +106,7 @@ public class SysAccountService
 		
 	}
 	
-	public boolean verifyPasswd(String passwd,String encryptPasswd) throws NoSuchAlgorithmException, UnsupportedEncodingException
+	public boolean verifyPasswd(String accountid,String passwd,String encryptPasswd) throws NoSuchAlgorithmException, UnsupportedEncodingException
 	{
 		MessageDigest md5=MessageDigest.getInstance("MD5");
 		MessageDigest sha256=MessageDigest.getInstance("SHA-256");
@@ -117,7 +117,7 @@ public class SysAccountService
 			passwdHash+=encryptPasswd.substring(i, i+1);
 			sMd5Slot+=encryptPasswd.substring(i+1, i+2);
 		}
-		sha256.update((passwd+sMd5Slot).getBytes("GBK"));
+		sha256.update((passwd+sMd5Slot+accountid).getBytes("GBK"));
 		byte[] bSha256=sha256.digest();
 		String sSha256="";
 		for(byte b:bSha256)
@@ -144,7 +144,7 @@ public class SysAccountService
 	}
 	public int addSysAccount(SysAccount sysAccount,String rolelist) throws UnsupportedEncodingException, NoSuchAlgorithmException
 	{
-		sysAccount.setPassword(this.generateEncryptPasswd("111111"));
+		sysAccount.setPassword(this.generateEncryptPasswd(sysAccount.getAccountid(),sysAccount.getAccountid()+"@369"));
 		sysAccountDao.insert(sysAccount);
 		List<SysAccountFeatureKey> busiList=sysAccount.busiFeature;
 		for(int j=0;j<busiList.size();j++)
