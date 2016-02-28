@@ -151,7 +151,7 @@ public class SmsController
 			template.setContent(content);
 			template.setStartcolnum(startColNum);
 			template.setTelvarname(telVarName);
-			if(attachFile!=null)
+			if(attachFile!=null&&attachFile.getSize()!=0)
 			{
 				String newFileName=name+"Ä£°å"+Utils.getFileSuffix(attachFile.getOriginalFilename());
 				String absFilePath=session.getServletContext().getRealPath("/")+"template"+File.separator+newFileName;
