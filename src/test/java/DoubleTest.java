@@ -49,7 +49,7 @@ public class DoubleTest
 //		}
 //		System.out.println(varcnt);
 		System.out.println(new Date().getTime());
-		String passwd="111111";
+		String passwd="Pujjr123";
 		MessageDigest md5=MessageDigest.getInstance("MD5");
 		MessageDigest sha256=MessageDigest.getInstance("SHA-256");
 		//生产64位用户随机盐
@@ -70,7 +70,7 @@ public class DoubleTest
 			sMd5Slot+=String.format("%02X", b);
 		}
 		System.out.println("md5 slot="+sMd5Slot);
-		sha256.update((passwd+sMd5Slot).getBytes("GBK"));
+		sha256.update((passwd+sMd5Slot+"xmeng").getBytes("GBK"));
 		byte[] bSha256=sha256.digest();
 		String sSha256="";
 		for(byte b:bSha256)
@@ -105,7 +105,7 @@ public class DoubleTest
 			sMd5Slot+=encryptPasswd.substring(i+1, i+2);
 		}
 		System.out.println(sMd5Slot);
-		sha256.update(("198491"+sMd5Slot).getBytes("GBK"));
+		sha256.update(("Pujjr123"+sMd5Slot+"xmeng").getBytes("GBK"));
 		bSha256=sha256.digest();
 		sSha256="";
 		for(byte b:bSha256)
