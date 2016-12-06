@@ -1,4 +1,16 @@
 var confirmtaskid;
+var prevWindow;
+var reSendWindow;
+var taskDtlStore;
+function redo(taskid)
+{
+	taskDtlStore.getProxy().extraParams = {
+		'taskid' : taskid,
+		'procStatus':'发送失败'
+	};
+	taskDtlStore.load();
+	reSendWindow.show();
+}
 Ext.application({
 	name : '批量短信任务管理',
 	launch : function() {
@@ -58,7 +70,7 @@ Ext.application({
 		var gridStore = Ext.create('Ext.data.Store', {
 			autoLoad : false,
 			pageSize:20,
-			fields : ['taskid','taskname','tasktype','tplid','content','filename','totalcnt','istimertask','sendtime','procstatus','createid','createdate'],
+			fields : ['taskid','taskname','tasktype','tplid','content','filename','totalcnt','succcnt','failcnt','istimertask','sendtime','procstatus','createid','createdate'],
 			proxy : {
 				type : 'ajax',
 				actionMethods:{
@@ -75,10 +87,10 @@ Ext.application({
 				url : '../../action/pujjr/queryTaskList'
 			}
 		});
-		var taskDtlStore = Ext.create('Ext.data.Store', {
+		taskDtlStore = Ext.create('Ext.data.Store', {
 			autoLoad : false,
 			pageSize:20,
-			fields : ['content','tel','procstatus','taskid','id'],
+			fields : ['content','tel','procstatus','taskid','id','resendcnt'],
 			proxy : {
 				type : 'ajax',
 				actionMethods:{
@@ -95,7 +107,91 @@ Ext.application({
 				url : '../../action/pujjr/queryTaskDtlList'
 			}
 		});
-		var prevWindow=Ext.create('Ext.window.Window', {
+		var checkBox = Ext.create('Ext.selection.CheckboxModel');  
+		var failGrid=Ext.create('Ext.grid.Panel',{
+				store:taskDtlStore,
+				selModel:checkBox, 
+				columns:[{
+					header:'短信内容',
+					dataIndex:'content',
+					flex:1,
+					renderer: function(value, meta, record) {
+						meta.style = 'white-space:normal;word-break:break-all;';
+				        return value;
+				    }
+				},{
+					header:'接收号码',
+					dataIndex:'tel',
+					width:150
+				},{
+					header:'处理状态',
+					dataIndex:'procstatus',
+					width:150
+				},{
+					header:'重发次数',
+					dataIndex:'resendcnt',
+					width:70
+				}],
+				dockedItems : [ {
+					xtype:'toolbar',
+					id:'confirmresend',
+					dock:'top',
+					items:['->',{
+						glyph:'xf067@FontAwesome',
+						text:'确认重发',
+						handler:function(){
+							var record = failGrid.getSelectionModel().getSelection();
+							if(record.length==0){
+								alert('未选择记录');
+								return;
+							}
+							var dtlIdList='';
+							for(var i=0;i<record.length;i++){
+								dtlIdList+=record[i].get('id')+',';
+							}
+							Ext.Msg.wait('正在保存数据,请稍候','提示');
+							Ext.Ajax.request({
+							    url: '../../action/pujjr/resend',
+							    params: {
+							        'dtlIdList':dtlIdList
+							    },
+							    success: function(response){
+							    	Ext.Msg.hide();
+							        var data = Ext.JSON.decode(response.responseText);
+							        if(data.success==false){
+							        	Ext.Msg.alert('信息提示',data.errors.errmsg);
+							        	return;
+							        }else{
+							        	reSendWindow.close();
+							        	Ext.Msg.alert('信息提示','交易成功');
+							        	editPanel.hide();
+										queryPanel.anchor='100% 100%';
+										queryPanel.updateLayout();
+										queryPanel.show();
+										gridStore.load();
+							        }
+							        	
+							    }
+							});
+						}
+					}]
+				},{
+					xtype : 'pagingtoolbar',
+					store : taskDtlStore, // GridPanel使用相同的数据源
+					dock : 'bottom',
+					displayInfo : true
+				} ]
+		});
+		reSendWindow=Ext.create('Ext.window.Window', {
+		    title: '失败短信明细',
+		    height: 500,
+		    width: 800,
+		    layout: 'fit',
+		    closeAction: "hide",
+		    modal:true,
+		    items: [failGrid]
+		});
+		prevWindow=Ext.create('Ext.window.Window', {
 		    title: '短息明细',
 		    height: 500,
 		    width: 800,
@@ -390,7 +486,6 @@ Ext.application({
 				}]
 			}]
 		});
-		
 		var queryGrid = Ext.create('Ext.grid.Panel', {
 			anchor:'100% 85%',
 			store : gridStore,
@@ -406,6 +501,17 @@ Ext.application({
 				header : '记录总数',
 				width:70,
 				dataIndex : 'totalcnt'
+			},{
+				header : '成功笔数',
+				width:70,
+				dataIndex : 'succcnt'
+			},{
+				header : '失败笔数',
+				width:70,
+				dataIndex : 'failcnt',
+				renderer:function(value,meta,record){
+					return '<a href="javascript:void(0)" onclick=redo("'+record.get('taskid')+'")>'+value+'</a>';
+				}
 			},{
 				header : '定时发送',
 				dataIndex : 'istimertask',
@@ -427,10 +533,12 @@ Ext.application({
 			},{
 				header:'创建人员',
 				dataIndex:'createid',
+				hidden:true,
 				width:70
 			},{
 				header:'创建时间',
 				dataIndex:'createdate',
+				hidden:true,
 				width:130
 			},{
 				header : '查看明细',

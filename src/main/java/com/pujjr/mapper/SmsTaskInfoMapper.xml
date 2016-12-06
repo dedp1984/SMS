@@ -14,7 +14,17 @@
     <result column="procstatus" jdbcType="VARCHAR" property="procstatus" />
     <result column="createid" jdbcType="VARCHAR" property="createid" />
     <result column="createdate" jdbcType="DATE" property="createdate" />
+    <association property="succcnt" column="taskid" jdbcType="INTEGER" select="selectSuccCnt"></association>
+    <association property="failcnt" column="taskid" jdbcType="INTEGER" select="selectFailCnt"></association>
   </resultMap>
+  <select id="selectSuccCnt" parameterType="String" resultType="INTEGER">
+      select count(*) from t_sms_taskdtl  
+      where taskid=#{taskid} and procstatus='发送成功'
+  </select>
+  <select id="selectFailCnt" parameterType="String" resultType="INTEGER">
+      select count(*) from t_sms_taskdtl  
+      where taskid=#{taskid} and procstatus='发送失败'
+  </select>
   <sql id="Base_Column_List">
     taskid, taskname, tasktype, tplid, content, filename, totalcnt, istimertask, sendtime, 
     procstatus, createid, createdate

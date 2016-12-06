@@ -10,6 +10,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
@@ -307,6 +308,7 @@ public class SmsService
 			}
 			smsTaskDtl.setContent(replaceContent);
 			smsTaskDtl.setProcstatus("待处理");
+			smsTaskDtl.setResendcnt(0);
 			smsTaskDtlDao.insert(smsTaskDtl);
 		}
 		return rowCnt-startColNum+1;
@@ -316,7 +318,7 @@ public class SmsService
 	 * **/
 	public void moveTaskToWaitSend(String taskid)
 	{
-		List<SmsTaskDtl> smsTaskDtlList=smsTaskDtlDao.selectListByTaskId(taskid);
+		List<SmsTaskDtl> smsTaskDtlList=smsTaskDtlDao.selectListByTaskId(taskid,"待处理");
 		int size=smsTaskDtlList.size();
 		for(int i=0;i<size;i++)
 		{
@@ -359,9 +361,9 @@ public class SmsService
 	 * 参数：taskid-任务号
 	 * 返回：明细列表
 	 * **/
-	public List<SmsTaskDtl>  querySmsTaskDtlListByTaskId(String taskid)
+	public List<SmsTaskDtl>  querySmsTaskDtlListByTaskId(String taskid,String procStatus)
 	{
-		return smsTaskDtlDao.selectListByTaskId(taskid);
+		return smsTaskDtlDao.selectListByTaskId(taskid,procStatus);
 	}
 	
 	/**
@@ -419,4 +421,76 @@ public class SmsService
 			throw new Exception("余额不足，当前短信剩余条数:"+overage+"条，本次发送条数："+curBatchCnt+"条");
 		}
 	}
+	
+	/**
+	 * 功能：批量任务失败短信重发
+	 * 参数：短信明细id编号
+	 * @throws Exception 
+	 * **/
+	public void batchResendMsg(String ids[]) throws Exception
+	{
+		for(int i=0;i<ids.length;i++)
+		{
+			String id=ids[i];
+			SmsTaskDtl item=smsTaskDtlDao.selectByPrimaryKey(id);
+			if(item==null)
+			{
+				throw new Exception(id+"短信不存在");
+			}
+			if(!item.getProcstatus().trim().equals("发送失败"))
+			{
+				throw new Exception("短信发送状态不是发送失败，不允许重发");
+			}
+			if(item.getResendcnt()==3)
+			{
+				throw new Exception("重发次数已达三次，不允许多次发送");
+			}
+			
+			SmsWaitSend smsWaitSend=new SmsWaitSend();
+			smsWaitSend.setId(Utils.get16UUID());
+			smsWaitSend.setSrcchnl("0");
+			smsWaitSend.setDetailid(item.getId());
+			smsWaitSend.setContent(item.getContent());
+			smsWaitSend.setTel(item.getTel());
+			smsWaitSend.setProcstatus("待处理");
+			smsWaitSendDao.insert(smsWaitSend);
+			item.setProcstatus("已处理");
+			int resendCnt=item.getResendcnt()+1;
+			item.setResendcnt(resendCnt);
+			smsTaskDtlDao.updateByPrimaryKey(item);
+		}
+		
+	}
+	/**
+	 * 功能：发送单条短信
+	 * 参数：msg-短信内容
+	 *     telno-短信号码
+	 * @throws Exception 
+	 * **/
+	 public void sendOne2OneMsg(String msg,String telno) throws Exception
+	 {
+		 try
+		 {
+			if(telno.trim().length()!=11)
+			{
+				throw new Exception("电话号码长度不是11位");
+			}
+			if(StringUtils.isNumeric(telno)==false)
+			{
+				throw new Exception("电话号码存在非数字字符，请检查 ");
+			}
+			SmsWaitSend smsWaitSend = new SmsWaitSend();
+			smsWaitSend.setId(Utils.get16UUID());
+			smsWaitSend.setSrcchnl("1");
+			smsWaitSend.setDetailid("");
+			smsWaitSend.setContent(msg);
+			smsWaitSend.setTel(telno);
+			smsWaitSend.setProcstatus("待处理");
+			smsWaitSendDao.insert(smsWaitSend);
+		 }catch(Exception e)
+		 {
+			 throw new Exception(e.getMessage());
+		 }
+		
+	 }
 }

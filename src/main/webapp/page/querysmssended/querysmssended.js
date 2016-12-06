@@ -1,5 +1,5 @@
 Ext.application({
-	name : '账户管理',
+	name : '已发送短信查询',
 	launch : function() {
 		
 		var editAction;
@@ -31,7 +31,7 @@ Ext.application({
 			}
 		});
 		var queryGrid = Ext.create('Ext.grid.Panel', {
-			anchor:'100% 70%',
+			anchor:'100% 75%',
 			store : gridStore,
 			flex:2,
 			columns : [ {
@@ -429,7 +429,7 @@ Ext.application({
 		var queryForm=Ext.create('Ext.form.Panel',{
 			border:1,
 			bodyPadding:'20 20 0',
-			anchor:'100% 30%',
+			anchor:'100% 25%',
 			paramsAsHash: true,
 			layout : 'form',
 			items : [{
@@ -505,7 +505,7 @@ Ext.application({
 				        valueField:'value',
 				        editable:false,
 				        allowBlank:true,
-				        value:'发送失败', 
+				        value:'', 
 				        blankText:'请选择发送结果',
 			            emptyText:'请选择发送结果',
 				        store:{  
@@ -555,7 +555,7 @@ Ext.application({
 		//角色信息列表显示
 		var queryPanel = Ext.create('Ext.panel.Panel', {
 			name:'queryPanel',
-			title : '用户信息查询',
+			title : '已发送短信查询',
 			anchor:'100% 100%',
 			layout : {
 				type:'anchor'

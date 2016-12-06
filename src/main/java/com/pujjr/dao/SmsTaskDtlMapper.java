@@ -19,7 +19,8 @@ public interface SmsTaskDtlMapper {
 
     int updateByPrimaryKey(SmsTaskDtl record);
     
-    List<SmsTaskDtl> selectListByTaskId(@Param("taskid")String taskid);
+    List<SmsTaskDtl> selectListByTaskId(@Param("taskid")String taskid,
+    		                            @Param("procStatus")String procStatus);
     
     int deleteByTaskId(@Param("taskid")String taskid);
 }
