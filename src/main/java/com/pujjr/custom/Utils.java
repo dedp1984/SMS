@@ -137,6 +137,16 @@ public class Utils {
 		}
 		return filePath;
 	}
+	
+	public static String getFilePath(String filePath)
+	{
+		int indexSlash;
+		if((indexSlash=filePath.lastIndexOf(File.separator))!=-1)
+		{
+			return filePath.substring(0, indexSlash);
+		}
+		return null;
+	}
 	public static ArrayList<String> getAccoutTypeListByFeatures(List<SysAccountFeatureKey> busifeatures)
 	{
 		ArrayList<String> typelist=new ArrayList<String>();

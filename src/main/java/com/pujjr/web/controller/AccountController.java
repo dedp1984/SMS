@@ -1,3 +1,4 @@
+
 package com.pujjr.web.controller;
 
 import java.io.UnsupportedEncodingException;
@@ -245,4 +246,3 @@ public class AccountController {
 		return new Result(true);
 	}
 }
-

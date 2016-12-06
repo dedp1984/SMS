@@ -114,5 +114,5 @@
       resendcnt = #{resendcnt,jdbcType=INTEGER}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
-  
+ 
 </mapper>
