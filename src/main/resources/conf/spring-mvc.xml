@@ -9,12 +9,21 @@
             http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd              
             http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
     <bean id="smsMerchant" class="com.pujjr.merchant.SmsMerchant">
+	    
+	    <!--  
 	    <property name="userid" value="380"></property>
 	    <property name="account" value="SDK88027"></property>
 	    <property name="password" value="880270"></property>
 	    <property name="serverUrl" value="http://sdk8.mdjc.net.cn:8888/smsGBK.aspx"></property>
 	    <property name="serverUrlStatus" value="http://sdk8.mdjc.net.cn:8888/statusApi.aspx"></property>
 	    <property name="serverUrlCallApi" value="http://sdk8.mdjc.net.cn:8888/callApi.aspx"></property>
+	    -->
+	    <property name="userid" value="233"></property>
+	    <property name="account" value="PUJINRZ"></property>
+	    <property name="password" value="pjrz1103"></property>
+	    <property name="serverUrl" value="http://sms.ht3g.com/smsGBK.aspx"></property>
+	    <property name="serverUrlStatus" value="http://sms.ht3g.com/statusApi.aspx"></property>
+	    <property name="serverUrlCallApi" value="http://sms.ht3g.com/callApi.aspx"></property>
 	</bean>
 	<bean id="smsThreadServer" class="com.pujjr.service.SmsThreadService">
 	    <property name="maxQueueSize" value="1000"></property>
