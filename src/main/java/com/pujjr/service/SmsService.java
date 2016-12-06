@@ -10,6 +10,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
@@ -460,4 +461,36 @@ public class SmsService
 		}
 		
 	}
+	/**
+	 * 功能：发送单条短信
+	 * 参数：msg-短信内容
+	 *     telno-短信号码
+	 * @throws Exception 
+	 * **/
+	 public void sendOne2OneMsg(String msg,String telno) throws Exception
+	 {
+		 try
+		 {
+			if(telno.trim().length()!=11)
+			{
+				throw new Exception("电话号码长度不是11位");
+			}
+			if(StringUtils.isNumeric(telno)==false)
+			{
+				throw new Exception("电话号码存在非数字字符，请检查 ");
+			}
+			SmsWaitSend smsWaitSend = new SmsWaitSend();
+			smsWaitSend.setId(Utils.get16UUID());
+			smsWaitSend.setSrcchnl("1");
+			smsWaitSend.setDetailid("");
+			smsWaitSend.setContent(msg);
+			smsWaitSend.setTel(telno);
+			smsWaitSend.setProcstatus("待处理");
+			smsWaitSendDao.insert(smsWaitSend);
+		 }catch(Exception e)
+		 {
+			 throw new Exception(e.getMessage());
+		 }
+		
+	 }
 }

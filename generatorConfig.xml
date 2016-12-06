@@ -66,7 +66,7 @@
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>
-		-->
+		
 		<table tableName="T_JXS" domainObjectName="JXS" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
@@ -76,6 +76,11 @@
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>
 		<table tableName="T_ENUM" domainObjectName="Enum" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		-->
+		<table tableName="T_BANKNO" domainObjectName="Bankno" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>
