@@ -5,10 +5,12 @@ import java.util.List;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 @Component
+@Scope("singleton")
 public class SmsMerchant
 {
 	// 企业ID
@@ -23,7 +25,15 @@ public class SmsMerchant
 	private String serverUrlStatus;
 	//查询上行接口URL
 	private String serverUrlCallApi;
+	//供应商名称
+	private String supplyName;
 	
+	public String getSupplyName() {
+		return supplyName;
+	}
+	public void setSupplyName(String supplyName) {
+		this.supplyName = supplyName;
+	}
 	public String getServerUrlCallApi()
 	{
 		return serverUrlCallApi;

@@ -24,6 +24,7 @@
 	    <property name="serverUrl" value="http://sms.ht3g.com/smsGBK.aspx"></property>
 	    <property name="serverUrlStatus" value="http://sms.ht3g.com/statusApi.aspx"></property>
 	    <property name="serverUrlCallApi" value="http://sms.ht3g.com/callApi.aspx"></property>
+	    <property name="supplyName" value="华唐"></property>
 	</bean>
 	<bean id="smsThreadServer" class="com.pujjr.service.SmsThreadService">
 	    <property name="maxQueueSize" value="1000"></property>

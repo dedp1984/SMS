@@ -27,6 +27,7 @@ import com.pujjr.domain.SmsSended;
 import com.pujjr.domain.SmsTaskDtl;
 import com.pujjr.domain.SmsWaitSend;
 import com.pujjr.merchant.SmsMerchant;
+import com.pujjr.message_api.service.IMessageCallbackService;
 
 public class SmsThreadService
 {
@@ -44,6 +45,8 @@ public class SmsThreadService
 	private SmsMerchant smsMerchant;
 	
 	private ExecutorService executor;
+	@Resource
+	private IMessageCallbackService messageCallbackService;
 	
 	private int maxQueueSize;
 	private int maxThreadPoolSize;
@@ -186,6 +189,11 @@ public class SmsThreadService
 					if(!returnstatus.equals("Success"))
 					{
 						procStatus="发送失败:"+message;
+						//如果是信贷系统发送的则回写发送状态
+						if(item.getSrcchnl().equals("2"))
+						{
+							messageCallbackService.updateSmsSendStatus(item.getDetailid(), procStatus);
+						}
 					}
 				}
 				catch(InterruptedException e)
@@ -258,6 +266,7 @@ public class SmsThreadService
 							{
 								procStatus="发送失败";
 							}
+							
 							record.setProcstatus(procStatus);
 							smsSendedDao.updateBySendTaskId(record);
 							//如果来自网页批量渠道则需更新对应的批量明细记录
@@ -266,6 +275,11 @@ public class SmsThreadService
 								 SmsTaskDtl dtl=smsTaskDtlDao.selectByPrimaryKey(record.getDetailid());
 								 dtl.setProcstatus(procStatus);
 								 smsTaskDtlDao.updateByPrimaryKey(dtl);
+							}
+							//如果是信贷系统发送的则回写发送状态
+							if(record.getSrcchnl().equals("2"))
+							{
+								messageCallbackService.updateSmsSendStatus(record.getDetailid(), procStatus);
 							}
 						}
 						
