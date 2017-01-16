@@ -5,7 +5,7 @@
 	<artifactId>sms</artifactId>
 	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>demo Maven Webapp</name>
+	<name>sms_ht</name>
 	<url>http://maven.apache.org</url>
 	<properties>
 		<!-- spring版本号 -->
@@ -254,7 +254,7 @@
 	</dependencies>
 	
 	<build>
-		<finalName>sms</finalName>
+		<finalName>sms_ht</finalName>
 		<plugins>
     	<plugin>  
 		    <artifactId>maven-compiler-plugin</artifactId>  
